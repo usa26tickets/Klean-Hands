@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klean Hands Cleaning Service — Confidential Reporting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  :root{
+    --ink: #0A0A0A;
+    --ink-soft: #151515;
+    --paper: #F2EEE8;
+    --paper-dim: #E2DCD0;
+    --slate: #A31621;
+    --slate-light: #E63946;
+    --brick: #E63946;
+    --line: rgba(242,238,232,0.14);
+    --line-paper: rgba(10,10,10,0.16);
+    --serif: 'Source Serif 4', Georgia, serif;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--sans);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+  }
+
+  a{ color:var(--slate-light); }
+  :focus-visible{ outline:2px solid var(--slate-light); outline-offset:3px; }
+
+  .wrap{ max-width:920px; margin:0 auto; padding:0 28px; }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:20;
+    background:rgba(22,27,29,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .header-inner{
+    max-width:920px; margin:0 auto; padding:18px 28px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .wordmark{
+    font-family:var(--serif); font-size:1.5rem; font-weight:700;
+    letter-spacing:0.01em; color:var(--paper); text-decoration:none;
+  }
+  .wordmark .accent{ color:var(--slate-light); }
+  .wordmark .suffix{ font-family:var(--serif); font-size:1em; font-weight:700; color:var(--paper); letter-spacing:0.01em; margin-left:0.3ch; }
+  nav a{
+    font-size:0.9rem; color:var(--paper); text-decoration:none;
+    margin-left:28px; opacity:0.75;
+  }
+  nav a:hover{ opacity:1; }
+  .nav-cta{
+    border:1px solid var(--line); padding:8px 16px; border-radius:2px;
+    opacity:1 !important;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:90px 0 70px;
+    border-bottom:1px solid var(--line);
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1fr clamp(180px, 28vw, 340px); gap:clamp(24px, 4vw, 56px); align-items:start;
+  }
+  .hero-side{ display:flex; flex-direction:column; align-items:center; gap:28px; }
+  .avatar-frame{
+    width:clamp(160px, 26vw, 340px); height:clamp(160px, 26vw, 340px); border-radius:50%; overflow:hidden;
+    border:2px solid var(--slate); position:relative; flex-shrink:0;
+    background:var(--ink-soft);
+    box-shadow:0 0 0 8px rgba(163,22,33,0.08);
+  }
+  .avatar-frame img{ width:100%; height:100%; object-fit:cover; object-position: center 20%; display:block; }
+  .avatar-placeholder{
+    display:none; width:100%; height:100%; align-items:center; justify-content:center;
+    font-size:0.85rem; color:rgba(242,238,232,0.4); text-align:center; padding:10px;
+  }
+  .kicker{
+    font-size:0.85rem; color:var(--slate-light); margin:0 0 18px;
+    max-width:32ch;
+  }
+  h1{
+    font-family:var(--serif); font-weight:500;
+    font-size:clamp(2.4rem, 5vw, 3.6rem);
+    line-height:1.08; margin:0 0 26px; color:var(--paper);
+    max-width:15ch;
+    opacity:0; transform:translateY(14px);
+    animation:rise 0.8s ease-out 0.15s forwards;
+  }
+  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
+  .hero-lede{
+    font-size:1.08rem; color:rgba(243,239,230,0.82); max-width:52ch; margin:0 0 34px;
+  }
+  .hero-actions{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    display:inline-block; font-family:var(--sans); font-weight:500; font-size:0.95rem;
+    padding:13px 24px; text-decoration:none; border-radius:2px; cursor:pointer; border:1px solid transparent;
+  }
+  .btn-primary{ background:var(--slate); color:var(--paper); }
+  .btn-primary:hover{ background:var(--slate-light); }
+  .btn-ghost{ border-color:var(--line); color:var(--paper); background:transparent; }
+  .btn-ghost:hover{ border-color:var(--slate-light); }
+
+  .hero-meta{ font-size:0.85rem; color:rgba(243,239,230,0.6); }
+  .hero-meta dt{ color:var(--slate-light); margin-top:16px; font-weight:500; }
+  .hero-meta dt:first-child{ margin-top:0; }
+  .hero-meta dd{ margin:2px 0 0; }
+  .hero-meta dd a{ color:rgba(242,238,232,0.8); text-decoration:none; }
+  .hero-meta dd a:hover{ color:var(--slate-light); }
+
+  /* ---------- Section shell ---------- */
+  section{ padding:70px 0; border-bottom:1px solid var(--line); }
+  .section-head{
+    display:grid; grid-template-columns:120px 1fr; gap:24px; margin-bottom:38px;
+  }
+  .section-num{ font-family:var(--serif); font-size:0.95rem; color:var(--slate-light); }
+  h2{
+    font-family:var(--serif); font-weight:500; font-size:1.7rem; margin:0;
+    color:var(--paper); max-width:26ch;
+  }
+  .section-body{ display:grid; grid-template-columns:120px 1fr; gap:24px; }
+  .section-body > p, .section-body > div{ color:rgba(243,239,230,0.82); max-width:60ch; }
+
+  /* ---------- What Klean Hands is ---------- */
+  .principles{ list-style:none; margin:20px 0 0; padding:0; display:grid; gap:22px; }
+  .principles li{ border-top:1px solid var(--line); padding-top:16px; }
+  .principles h3{ font-family:var(--sans); font-weight:600; font-size:1rem; margin:0 0 6px; color:var(--paper); }
+  .principles p{ margin:0; font-size:0.95rem; color:rgba(243,239,230,0.72); max-width:56ch; }
+
+  /* ---------- Process (paper panel) ---------- */
+  .process{ background:var(--paper); color:var(--ink); }
+  .process .section-num, .process h2{ color:var(--ink); }
+  .process .kicker-inline{ color:var(--slate); }
+  .steps{ list-style:none; margin:0; padding:0; counter-reset:step; display:grid; gap:0; }
+  .steps li{
+    counter-increment:step;
+    display:grid; grid-template-columns:48px 1fr; gap:20px;
+    padding:22px 0; border-top:1px solid var(--line-paper);
+  }
+  .steps li:last-child{ border-bottom:1px solid var(--line-paper); }
+  .steps li::before{
+    content:counter(step,decimal-leading-zero);
+    font-family:var(--serif); font-size:1.1rem; color:var(--slate);
+  }
+  .steps h3{ margin:0 0 4px; font-size:1.02rem; font-family:var(--sans); font-weight:600; }
+  .steps p{ margin:0; font-size:0.94rem; color:rgba(22,27,29,0.72); max-width:56ch; }
+
+  /* ---------- Report form ---------- */
+  .form-panel{
+    background:var(--paper); color:var(--ink);
+    border:1px solid var(--line-paper);
+  }
+  .form-panel .section-num, .form-panel h2{ color:var(--ink); }
+  .form-note{
+    font-size:0.9rem; color:var(--slate); background:var(--paper-dim);
+    border:1px solid var(--line-paper); padding:14px 16px; margin:0 0 30px; max-width:60ch;
+  }
+  form{ display:grid; gap:26px; max-width:60ch; }
+  .field{ display:grid; gap:8px; }
+  .field-label{
+    font-size:0.85rem; font-weight:600; color:var(--ink);
+    display:flex; justify-content:space-between; align-items:baseline;
+  }
+  .field-label .opt{ font-weight:400; color:rgba(22,27,29,0.5); font-size:0.8rem; }
+  input[type=text], input[type=email], select, textarea{
+    font-family:var(--sans); font-size:0.98rem; color:var(--ink);
+    background:#fff; border:1px solid rgba(22,27,29,0.28);
+    padding:12px 14px; border-radius:2px; width:100%;
+  }
+  textarea{ min-height:140px; resize:vertical; }
+  input:focus, select:focus, textarea:focus{ border-color:var(--slate); }
+
+  .radio-row{ display:flex; gap:20px; flex-wrap:wrap; }
+  .radio-opt{ display:flex; align-items:center; gap:8px; font-size:0.95rem; }
+  .radio-opt input{ accent-color:var(--slate); width:16px; height:16px; }
+
+  .anon-note{
+    font-size:0.85rem; color:var(--slate); border-left:2px solid var(--slate);
+    padding-left:12px; display:none;
+  }
+  .anon-note.show{ display:block; }
+
+  .consent{ font-size:0.85rem; display:flex; gap:10px; align-items:flex-start; color:rgba(22,27,29,0.75); }
+  .consent input{ margin-top:3px; accent-color:var(--slate); }
+
+  .submit-row{ display:flex; align-items:center; gap:16px; }
+  .form-status{ font-size:0.9rem; color:var(--slate); }
+  .form-status.error{ color:var(--brick); }
+
+  .case-confirm{
+    display:none; margin-top:30px; max-width:60ch;
+    background:var(--ink); color:var(--paper);
+    border:1px solid var(--slate); padding:24px 26px;
+  }
+  .case-confirm.show{ display:block; }
+  .case-confirm-label{
+    margin:0 0 10px; font-size:0.85rem; text-transform:none;
+    color:var(--slate-light); font-weight:600;
+  }
+  .case-confirm-id{
+    margin:0 0 12px; font-family:var(--serif); font-size:1.8rem;
+    letter-spacing:0.02em; color:var(--paper);
+  }
+  .case-confirm-note{
+    margin:0; font-size:0.85rem; color:rgba(242,238,232,0.65); max-width:52ch;
+  }
+
+  /* ---------- Confidentiality ---------- */
+  .safeguards{ list-style:none; margin:20px 0 0; padding:0; display:grid; gap:22px; }
+  .safeguards li{ border-top:1px solid var(--line); padding-top:16px; }
+  .safeguards h3{ font-family:var(--sans); font-weight:600; font-size:1rem; margin:0 0 6px; color:var(--paper); }
+  .safeguards p{ margin:0; font-size:0.95rem; color:rgba(243,239,230,0.72); max-width:56ch; }
+
+  /* ---------- About officer ---------- */
+  .about-grid{ display:grid; grid-template-columns:120px 1fr; gap:24px; }
+  .about-grid p{ color:rgba(242,238,232,0.82); max-width:58ch; }
+  .credential{ margin-top:18px; font-size:0.88rem; color:var(--slate-light); }
+
+  /* ---------- Footer ---------- */
+  footer{ padding:40px 0 60px; }
+  .footer-inner{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; font-size:0.85rem; color:rgba(243,239,230,0.55); }
+  .footer-contact a{ color:rgba(242,238,232,0.75); text-decoration:none; }
+  .footer-contact a:hover{ color:var(--slate-light); }
+  .footer-divider{ margin:0 8px; opacity:0.4; }
+
+  @media (max-width:480px){
+    .wordmark .suffix{ display:block; margin-left:0; }
+    .hero-grid{ grid-template-columns:1fr; }
+    .avatar-frame{ width:150px; height:150px; }
+    .section-head, .section-body, .about-grid{ grid-template-columns:1fr; }
+    .section-num{ margin-bottom:4px; }
+    nav a{ margin-left:16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="#top" class="wordmark"><span class="accent">Klean</span> Hands<span class="suffix">Cleaning Service</span></a>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#how">How it works</a>
+      <a href="#confidentiality">Confidentiality</a>
+      <a href="#report" class="nav-cta">File a report</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+      <div>
+        <p class="kicker">A confidential channel for reporting fraud, misconduct, threats, and disputes</p>
+        <h1>Say what happened. We'll take it from there.</h1>
+        <p class="hero-lede">Klean Hands is a private intake channel for reporting workplace fraud, misconduct, threats, or unresolved disputes — reviewed directly, handled discreetly, without your name attached unless you choose otherwise.</p>
+        <div class="hero-actions">
+          <a href="#report" class="btn btn-primary">File a report</a>
+          <a href="#how" class="btn btn-ghost">See how it works</a>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="avatar-frame">
+          <img src="my dad.png" alt="Photo of the conflict resolution officer" id="officer-photo" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="avatar-placeholder">Add photo</div>
+        </div>
+        <dl class="hero-meta">
+          <dt>Who this is for</dt>
+          <dd>Employees, clients, and third parties involved in a workplace or collections dispute</dd>
+          <dt>Reviewed by</dt>
+          <dd>A licensed conflict resolution officer</dd>
+          <dt>Reporting options</dt>
+          <dd>Name and email required for follow-up</dd>
+          <dt>Direct contact</dt>
+          <dd><a href="mailto:Howmayibeofhelp@gmail.com">Howmayibeofhelp@gmail.com</a><br><a href="tel:+16675266215">+1 (667) 526 6215</a></dd>
+        </dl>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h2>What we do</h2>
+      </div>
+      <div class="section-body">
+        <div></div>
+        <div>
+          <p>We offer all kinds of cleaning services, including:</p>
+          <ul class="principles">
+            <li>
+              <h3>Biomedical &amp; biohazardous abatement</h3>
+              <p>Certified cleanup and sanitation for blood, bodily fluids, medical waste, and other biohazardous material — handled to regulatory standard, with full decontamination and disposal documentation.</p>
+            </li>
+            <li>
+              <h3>Residential &amp; commercial cleaning</h3>
+              <p>Routine and deep cleaning for homes, offices, and commercial spaces.</p>
+            </li>
+            <li>
+              <h3>Post-construction &amp; move-in/move-out cleaning</h3>
+              <p>Full site cleanup after renovation or construction, and turnover cleaning between tenants.</p>
+            </li>
+            <li>
+              <h3>Sanitation &amp; disinfection services</h3>
+              <p>Deep disinfection for high-touch surfaces and shared spaces, on a one-time or scheduled basis.</p>
+            </li>
+          </ul>
+
+          <p style="margin-top:34px;">We also provide:</p>
+          <ul class="principles">
+            <li>
+              <h3>Debt collection</h3>
+              <p>Structured, compliant collection work that keeps accuracy and professionalism at the center of every recovery.</p>
+            </li>
+            <li>
+              <h3>Conflict resolution</h3>
+              <p>Neutral mediation for workplace and client disputes, including oversight of the confidential reporting channel below.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="what">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <h2>What this channel is for</h2>
+      </div>
+      <div class="section-body">
+        <div></div>
+        <div>
+          <p>Debt collection work and conflict resolution both depend on trust — and trust breaks when people have no safe way to flag a problem. Klean Hands exists so that anyone touched by that work has somewhere to put a concern down without it becoming a spectacle.</p>
+          <ul class="principles">
+            <li>
+              <h3>Workplace fraud or falsified records</h3>
+              <p>Misrepresented debts, altered account histories, improper fee assessment, or falsified collection notes.</p>
+            </li>
+            <li>
+              <h3>Misconduct</h3>
+              <p>Harassment, coercive collection tactics, abuse of authority, or conduct that violates professional standards.</p>
+            </li>
+            <li>
+              <h3>Threats</h3>
+              <p>Intimidation directed at staff, clients, or third parties — verbal, written, or implied.</p>
+            </li>
+            <li>
+              <h3>Unresolved disputes</h3>
+              <p>A disagreement that standard channels haven't been able to settle, and needs a neutral party to look at it.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="process">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-num">03</span>
+        <h2>How a report is handled</h2>
+      </div>
+      <ol class="steps">
+        <li>
+          <div>
+            <h3>You submit the report</h3>
+            <p>Fill in the intake form below. Include what happened, when, and who was involved, in as much or as little detail as you're comfortable with.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>It reaches one person</h3>
+            <p>Reports go directly to the conflict resolution officer's private inbox — not a shared queue, not a ticketing system.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>It gets reviewed within 3 business days</h3>
+            <p>Every report is read and assessed. If you left contact details, you'll hear back with next steps or questions.</p>
+          </div>
+        </li>
+        <li>
+          <div>
+            <h3>Resolution stays proportionate and private</h3>
+            <p>Action is taken discreetly wherever possible — no public escalation unless you ask for it or safety requires it.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="report" class="form-panel">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-num">04</span>
+        <h2>File a report</h2>
+      </div>
+      <p class="form-note">This form sends directly to a private inbox. Nothing is stored on a server or visible to anyone else. A name and email are required so we can follow up with you — including to arrange next steps and, where applicable, discuss fees.</p>
+
+      <form id="report-form">
+        <div class="field">
+          <label class="field-label" for="category">What is this report about?</label>
+          <select id="category" name="category" required>
+            <option value="" disabled selected>Select a category</option>
+            <option value="Fraud / falsified records">Fraud or falsified records</option>
+            <option value="Misconduct">Misconduct</option>
+            <option value="Threat">Threat</option>
+            <option value="Unresolved dispute">Unresolved dispute</option>
+            <option value="Cleaning service issue">Cleaning service issue</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="name">Your name</label>
+          <input type="text" id="name" name="name" autocomplete="name" required>
+        </div>
+        <div class="field" style="margin-top:26px;">
+          <label class="field-label" for="email">Email address</label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="when">When did this happen? <span class="opt">optional</span></label>
+          <input type="text" id="when" name="when" placeholder="e.g. Ongoing, or a specific date">
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="details">What happened?</label>
+          <textarea id="details" name="details" required placeholder="Describe the incident. Include names, dates, or account references if relevant — as much or as little as you're comfortable sharing."></textarea>
+        </div>
+
+        <label class="consent">
+          <input type="checkbox" id="consent" name="consent" required>
+          <span>I understand this report will be reviewed by the conflict resolution officer, and that follow-up is only possible if I've provided a way to reach me.</span>
+        </label>
+
+        <div class="submit-row">
+          <button type="submit" class="btn btn-primary" id="submit-btn">Submit report</button>
+          <span class="form-status" id="form-status"></span>
+        </div>
+      </form>
+
+      <div class="case-confirm" id="case-confirm">
+        <p class="case-confirm-label">Report submitted</p>
+        <p class="case-confirm-id" id="case-confirm-id"></p>
+        <p class="case-confirm-note">Save this number. It's the only way to reference this report later — it isn't tied to your name or email, and there's no lookup system for it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="confidentiality">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="section-num">05</span>
+        <h2>How confidentiality is protected</h2>
+      </div>
+      <div class="section-body">
+        <div></div>
+        <div>
+          <ul class="safeguards">
+            <li>
+              <h3>One recipient</h3>
+              <p>Reports are delivered directly to the conflict resolution officer. There is no intermediate system, dashboard, or shared team inbox.</p>
+            </li>
+            <li>
+              <h3>No server-side storage</h3>
+              <p>This form doesn't save submissions to a database. It sends once, directly, and nothing persists on this site.</p>
+            </li>
+            <li>
+              <h3>Contact details stay private</h3>
+              <p>Your name and email are used only to review your report and follow up — never shared beyond that, and never published anywhere.</p>
+            </li>
+            <li>
+              <h3>No retaliation</h3>
+              <p>Reports made in good faith will not result in retaliation against the reporter.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about-grid">
+      <span class="section-num">06</span>
+      <div>
+        <h2 style="margin-bottom:14px;">Who reviews these reports</h2>
+        <p>Reports are reviewed personally, not routed through a compliance department. The goal is a fair, private resolution — not publicity, and not punishment for coming forward.</p>
+        <p class="credential">Debt Collection &amp; Conflict Resolution Officer</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>Klean Hands Cleaning Service — confidential reporting channel</span>
+    <span class="footer-contact">
+      <a href="mailto:Howmayibeofhelp@gmail.com">Howmayibeofhelp@gmail.com</a>
+      <span class="footer-divider">·</span>
+      <a href="tel:+16675266215">+1 (667) 526 6215</a>
+    </span>
+    <span>For emergencies or immediate safety concerns, contact local authorities directly.</span>
+  </div>
+</footer>
+
+<script>
+  let emailjsReady = false;
+  try {
+    if (typeof emailjs !== 'undefined') {
+      emailjs.init({ publicKey: "qS3iHUVdvrDmnlN1j" });
+      emailjsReady = true;
+    } else {
+      console.warn('EmailJS library did not load — check your network/CDN access. The form will still generate case numbers, but reports will not be emailed.');
+    }
+  } catch (err) {
+    console.error('EmailJS failed to initialize:', err);
+  }
+
+  const SERVICE_ID = "service_zx9h2ng";
+  const TEMPLATE_ID = "template_sc556yt";
+  const AUTORESPONSE_TEMPLATE_ID = "template_5tnslpj";
+
+  const form = document.getElementById('report-form');
+  const status = document.getElementById('form-status');
+  const submitBtn = document.getElementById('submit-btn');
+  const caseConfirm = document.getElementById('case-confirm');
+  const caseConfirmId = document.getElementById('case-confirm-id');
+
+  function generateCaseId(){
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ123456789';
+    return Array.from({length:8}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    status.textContent = '';
+    status.classList.remove('error');
+    caseConfirm.classList.remove('show');
+
+    const caseId = generateCaseId();
+
+    caseConfirmId.textContent = caseId;
+    caseConfirm.classList.add('show');
+    caseConfirm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    const rawName = document.getElementById('name').value.trim();
+    const rawEmail = document.getElementById('email').value.trim();
+    const params = {
+      case_id: caseId,
+      category: document.getElementById('category').value,
+      name: rawName,
+      email: rawEmail,
+      when: document.getElementById('when').value || 'Not specified',
+      details: document.getElementById('details').value
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+    status.textContent = 'Sending…';
+
+    if (!emailjsReady) {
+      submitBtn.textContent = 'Submit report';
+      submitBtn.disabled = false;
+      status.textContent = 'Your reference number was generated, but email delivery is not connected yet (EmailJS didn\'t load). Check your EmailJS setup and internet connection.';
+      status.classList.add('error');
+      return;
+    }
+
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, params).then(
+      function(){
+        submitBtn.textContent = 'Submit report';
+        submitBtn.disabled = false;
+
+        emailjs.send(SERVICE_ID, AUTORESPONSE_TEMPLATE_ID, params).catch(function(err){
+          console.error('Autoresponse email failed to send:', err);
+        });
+
+        status.textContent = 'Report sent. Thank you for coming forward.';
+        form.reset();
+      },
+      function(err){
+        submitBtn.textContent = 'Submit report';
+        submitBtn.disabled = false;
+        status.textContent = 'Your reference number was generated, but the report failed to send. Please try again or contact us directly.';
+        status.classList.add('error');
+        console.error('EmailJS error — check that SERVICE_ID, TEMPLATE_ID, and the public key in emailjs.init() are set correctly:', err);
+      }
+    );
+  });
+</script>
+
+</body>
+</html>
